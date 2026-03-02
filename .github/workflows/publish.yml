@@ -80,6 +80,7 @@ jobs:
   publish-packages:
     needs: build
     runs-on: ubuntu-latest
+    environment: DEPLOY
     if: >-
       github.event_name == 'release' ||
       inputs.target == 'all' ||
@@ -121,6 +122,7 @@ jobs:
   publish-apps:
     needs: [build, publish-packages]
     runs-on: ubuntu-latest
+    environment: DEPLOY
     if: >-
       github.event_name == 'release' ||
       inputs.target == 'all' ||

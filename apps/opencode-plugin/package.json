@@ -1,17 +1,19 @@
 {
   "name": "@th0th/opencode-plugin",
   "version": "1.0.0",
-  "private": true,
   "description": "th0th plugin for OpenCode - Semantic code search, memory, and context compression",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "bin": {
-    "th0th-config": "src/config-cli.ts"
+    "th0th-config": "dist/config-cli.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "bun run --watch src/index.ts",
     "start": "bun run src/index.ts",
-    "build": "bun build src/index.ts --outdir=dist --target=bun",
+    "build": "bun build src/index.ts src/config-cli.ts --outdir=dist --target=bun",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

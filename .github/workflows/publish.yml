@@ -19,6 +19,15 @@ on:
         required: false
         default: 'latest'
         type: string
+      dry-run:
+        description: 'Dry run (no actual publish)'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  NPM_TAG: ${{ inputs.tag || 'latest' }}
+  DRY_RUN: ${{ inputs.dry-run == true && '--dry-run' || '' }}
 
 jobs:
   build:
@@ -38,19 +47,43 @@ jobs:
       - name: Build all packages and apps
         run: bun run build
 
+      - name: Resolve workspace dependencies
+        run: |
+          VERSION=$(jq -r '.version' packages/shared/package.json)
+          echo "Resolving workspace:* → $VERSION"
+
+          for pkg in packages/core/package.json apps/*/package.json; do
+            if grep -q '"workspace:\*"' "$pkg"; then
+              sed -i "s|\"workspace:\*\"|\"^$VERSION\"|g" "$pkg"
+              echo "  ✓ Resolved in $pkg"
+            fi
+          done
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dist
+          name: build-output
           path: |
-            packages/*/dist
-            apps/*/dist
+            packages/shared/dist
+            packages/shared/package.json
+            packages/core/dist
+            packages/core/prisma
+            packages/core/package.json
+            apps/tools-api/dist
+            apps/tools-api/package.json
+            apps/mcp-client/dist
+            apps/mcp-client/package.json
+            apps/opencode-plugin/dist
+            apps/opencode-plugin/package.json
           retention-days: 1
 
   publish-packages:
     needs: build
     runs-on: ubuntu-latest
-    if: inputs.target == 'all' || inputs.target == 'packages'
+    if: >-
+      github.event_name == 'release' ||
+      inputs.target == 'all' ||
+      inputs.target == 'packages'
     permissions:
       contents: read
       id-token: write
@@ -67,27 +100,31 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: dist
+          name: build-output
+          path: .
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
       - name: Publish @th0th/shared
         working-directory: packages/shared
-        run: bun publish --access public --tag ${{ inputs.tag || 'latest' }} --tolerate-republish
+        run: bun publish --access public --tag ${{ env.NPM_TAG }} --tolerate-republish ${{ env.DRY_RUN }}
         env:
           NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish @th0th/core
         working-directory: packages/core
-        run: bun publish --access public --tag ${{ inputs.tag || 'latest' }} --tolerate-republish
+        run: bun publish --access public --tag ${{ env.NPM_TAG }} --tolerate-republish ${{ env.DRY_RUN }}
         env:
           NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-apps:
-    needs: build
+    needs: [build, publish-packages]
     runs-on: ubuntu-latest
-    if: inputs.target == 'all' || inputs.target == 'apps'
+    if: >-
+      github.event_name == 'release' ||
+      inputs.target == 'all' ||
+      inputs.target == 'apps'
     permissions:
       contents: read
       id-token: write
@@ -104,25 +141,26 @@ jobs:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
-          name: dist
+          name: build-output
+          path: .
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
       - name: Publish @th0th/tools-api
         working-directory: apps/tools-api
-        run: bun publish --access public --tag ${{ inputs.tag || 'latest' }} --tolerate-republish
+        run: bun publish --access public --tag ${{ env.NPM_TAG }} --tolerate-republish ${{ env.DRY_RUN }}
         env:
           NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish @th0th/mcp-client
         working-directory: apps/mcp-client
-        run: bun publish --access public --tag ${{ inputs.tag || 'latest' }} --tolerate-republish
+        run: bun publish --access public --tag ${{ env.NPM_TAG }} --tolerate-republish ${{ env.DRY_RUN }}
         env:
           NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish @th0th/opencode-plugin
         working-directory: apps/opencode-plugin
-        run: bun publish --access public --tag ${{ inputs.tag || 'latest' }} --tolerate-republish
+        run: bun publish --access public --tag ${{ env.NPM_TAG }} --tolerate-republish ${{ env.DRY_RUN }}
         env:
           NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}

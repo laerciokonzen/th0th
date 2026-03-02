@@ -1,17 +1,20 @@
 {
   "name": "@th0th/mcp-client",
   "version": "1.0.0",
-  "private": true,
+  "description": "th0th MCP server - Semantic code search, memory, and context compression via Model Context Protocol",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "bin": {
-    "th0th": "src/index.ts",
-    "th0th-config": "src/config-cli.ts"
+    "th0th": "dist/index.js",
+    "th0th-config": "dist/config-cli.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "bun run --watch src/index.ts",
     "start": "bun run src/index.ts",
-    "build": "bun build src/index.ts --outdir=dist --target=bun",
+    "build": "bun build src/index.ts src/config-cli.ts --outdir=dist --target=bun",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
@@ -21,5 +24,10 @@
   "devDependencies": {
     "@types/node": "^22.10.5",
     "typescript": "^5.8.3"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/S1LV4/th0th"
   }
 }

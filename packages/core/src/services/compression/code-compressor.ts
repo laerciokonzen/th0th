@@ -316,9 +316,19 @@ export class CodeCompressor implements ICompressor {
    * Detect programming language from content
    */
   private detectLanguage(content: string): string {
+    const hasDartDirective = /(\bimport\s+['"][^'"]+['"]\s*;|\blibrary\s+\w+[\w.]*\s*;|\bpart\s+of\s+\w+[\w.]*\s*;)/.test(
+      content
+    );
+    const hasDartType = /\b(class|enum|mixin|extension)\s+\w+/.test(content);
+    const hasDartMain = /\bvoid\s+main\s*\(/.test(content);
+    const hasPartOfQuoted = /\bpart\s+of\s+['"][^'"]+['"]\s*;/.test(content);
+    const hasDartImport = /\bimport\s+['"](dart:|package:)[^'"]+['"]\s*;/.test(content);
+
     if (
-      /(\bimport\s+['"][^'"]+['"]\s*;|\blibrary\s+\w+[\w.]*\s*;|\bpart\s+of\s+\w+[\w.]*\s*;)/.test(content) &&
-      /\b(class|enum|mixin|extension)\s+\w+/.test(content)
+      (hasDartDirective && hasDartType) ||
+      hasDartMain ||
+      hasPartOfQuoted ||
+      hasDartImport
     ) {
       return 'dart';
     }

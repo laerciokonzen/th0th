@@ -143,7 +143,7 @@ if [ ! -f "$ENV_FILE" ]; then
 
 # Ollama Configuration (Local)
 OLLAMA_BASE_URL=http://localhost:11434
-OLLAMA_EMBEDDING_MODEL=nomic-embed-text:latest
+OLLAMA_EMBEDDING_MODEL=bge-m3
 OLLAMA_EMBEDDING_DIMENSIONS=768
 
 # Database Paths (relative to project root)

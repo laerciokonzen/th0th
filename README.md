@@ -212,7 +212,7 @@ npx @th0th/mcp-client th0th-config init --openai your-api-key    # OpenAI
 
 # Switch provider
 npx @th0th/mcp-client th0th-config use mistral --api-key your-key
-npx @th0th/mcp-client th0th-config use ollama --model nomic-embed-text:latest
+npx @th0th/mcp-client th0th-config use ollama --model bge-m3
 
 # Set specific configuration values
 npx @th0th/mcp-client th0th-config set embedding.dimensions 1024

@@ -21,8 +21,8 @@ import { Database } from "bun:sqlite";
 // ── Mock config and logger ────────────────────────────────────
 let tmpDir: string;
 
-mock.module("@th0th/shared", () => {
-  const actual = require("@th0th/shared");
+mock.module("@th0th-ai/shared", () => {
+  const actual = require("@th0th-ai/shared");
   return {
     ...actual,
     MemoryRelationType: actual.MemoryRelationType,

@@ -8,7 +8,7 @@ import {
   saveConfig,
   initConfig,
   defaultTh0thConfig,
-} from "@th0th/shared/config";
+} from "@th0th-ai/shared/config";
 
 const args = process.argv.slice(2);
 const command = args[0];

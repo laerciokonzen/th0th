@@ -49,7 +49,7 @@ File: `~/.config/opencode/opencode.json`
   "mcpServers": {
     "th0th": {
       "type": "local",
-      "command": ["bunx", "@th0th-ai/mcp-client"],
+        "command": ["bunx", "@th0th-ai/mcp-client"],
       "env": {
         "TH0TH_API_URL": "http://localhost:3333"
       },
@@ -63,7 +63,7 @@ File: `~/.config/opencode/opencode.json`
 
 ```json
 {
-  "plugin": ["@th0th/opencode-plugin"]
+  "plugin": ["@th0th-ai/opencode-plugin"]
 }
 ```
 
@@ -90,7 +90,7 @@ Create `.vscode/mcp.json` in your workspace:
   "servers": {
     "th0th": {
       "command": "bunx",
-      "args": ["@th0th-ai/mcp-client"],
+        "args": ["@th0th-ai/mcp-client"],
       "env": {
         "TH0TH_API_URL": "http://localhost:3333"
       }
@@ -177,19 +177,19 @@ Config file: `~/.config/th0th/config.json` (auto-created on first run)
 
 ```bash
 # Show current configuration
-npx @th0th/mcp-client --config-show
+npx @th0th-ai/mcp-client --config-show
 
 # Show config file path
-npx @th0th/mcp-client --config-path
+npx @th0th-ai/mcp-client --config-path
 
 # Show config directory
-npx @th0th/mcp-client --config-dir
+npx @th0th-ai/mcp-client --config-dir
 
 # Initialize configuration
-npx @th0th/mcp-client --config-init
+npx @th0th-ai/mcp-client --config-init
 
 # Show help
-npx @th0th/mcp-client --help
+npx @th0th-ai/mcp-client --help
 ```
 
 ### Embedding Providers
@@ -206,16 +206,16 @@ For detailed configuration management, use the config CLI:
 
 ```bash
 # Initialize with specific provider
-npx @th0th/mcp-client th0th-config init                          # Ollama (default)
-npx @th0th/mcp-client th0th-config init --mistral your-api-key   # Mistral
-npx @th0th/mcp-client th0th-config init --openai your-api-key    # OpenAI
+npx @th0th-ai/mcp-client --config-init                          # Ollama (default)
+npx @th0th-ai/mcp-client --config-init --mistral your-api-key   # Mistral
+npx @th0th-ai/mcp-client --config-init --openai your-api-key    # OpenAI
 
 # Switch provider
-npx @th0th/mcp-client th0th-config use mistral --api-key your-key
-npx @th0th/mcp-client th0th-config use ollama --model bge-m3
+npx @th0th-ai/mcp-client --config-init --mistral your-api-key
+npx @th0th-ai/mcp-client --config-init --ollama-model bge-m3
 
 # Set specific configuration values
-npx @th0th/mcp-client th0th-config set embedding.dimensions 1024
+npx @th0th-ai/mcp-client --config-set embedding.dimensions 1024
 ```
 
 ---

@@ -20,7 +20,7 @@ import {
   loadConfig, 
   getConfigPath,
   getConfigDir 
-} from "@th0th/shared/config";
+} from "@th0th-ai/shared/config";
 
 // Check for config-related flags before starting MCP server
 const args = process.argv.slice(2);
@@ -62,7 +62,7 @@ if (args.includes("--help") || args.includes("-h")) {
 th0th MCP Client
 
 Usage:
-  npx @th0th/mcp-client [options]
+  npx @th0th-ai/mcp-client [options]
 
 Options:
   --config-show     Show current configuration
@@ -72,11 +72,11 @@ Options:
   --help, -h        Show this help message
 
 For advanced configuration, use the config CLI:
-  npx @th0th/mcp-client th0th-config <command>
+  npx @th0th-ai/mcp-client th0th-config <command>
 
 Examples:
-  npx @th0th/mcp-client --config-show
-  npx @th0th/mcp-client --config-path
+  npx @th0th-ai/mcp-client --config-show
+  npx @th0th-ai/mcp-client --config-path
 `);
   process.exit(0);
 }
@@ -88,7 +88,7 @@ if (!configExists()) {
 [th0th] Initialized with default configuration
 [th0th] Config: ~/.config/th0th/config.json
 [th0th] Provider: Ollama (local, free)
-[th0th] To change: npx @th0th/mcp-client th0th-config use mistral --api-key YOUR_KEY
+[th0th] To change: npx @th0th-ai/mcp-client th0th-config use mistral --api-key YOUR_KEY
 `);
 }
 

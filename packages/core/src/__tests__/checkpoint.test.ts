@@ -48,6 +48,7 @@ mock.module("@th0th/shared", () => {
       warn: () => {},
       error: () => {},
       debug: () => {},
+      metric: () => {},
     },
   };
 });
@@ -197,14 +198,16 @@ describe("CheckpointManager", () => {
   });
 
   describe("getLatestCheckpoint", () => {
-    test("returns most recent checkpoint for task", () => {
+    test("returns most recent checkpoint for task", async () => {
       const state = makeTaskState();
 
       manager.createCheckpoint(state, {
         checkpointType: CheckpointType.AUTO,
       });
 
-      // Small delay to ensure different created_at
+      // Small delay to ensure different created_at timestamps
+      await new Promise(resolve => setTimeout(resolve, 10));
+      
       const state2 = makeTaskState({
         progress: { ...state.progress, completed: 5, percentage: 50 },
       });

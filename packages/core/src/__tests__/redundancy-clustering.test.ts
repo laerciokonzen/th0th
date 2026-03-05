@@ -44,6 +44,7 @@ mock.module("@th0th/shared", () => {
       warn: () => {},
       error: () => {},
       debug: () => {},
+      metric: () => {},
     },
   };
 });
